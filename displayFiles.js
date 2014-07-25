@@ -28,10 +28,17 @@ function displayFiles() {
     for(i in matches) {
         var match = matches[i].replace(/(\"|\')/g, ""); //replace " and ' in matches
         if(match.indexOf(".") !== -1) {
+            var lengthafterslash = match.substr(match.lastIndexOf("/")+1).length;
+            match = match.substr(0, match.lastIndexOf("/"));
             var path = osp.join(dirname, match);
-        } else if(match !== "/") { //if path equal root directory of current file directory: set path to current directory of curent file 
-            match = match.substr(1);  //else remove first "/"
+            scimoz.setSel(pos, pos-lengthafterslash);
+            scimoz.cut();
+        } else if(match !== "/") { //if path equal root directory of current file directory: set path to current directory of curent file
+            var lengthafterslash = match.substr(match.lastIndexOf("/")+1).length;
+            match = match.substr(1, match.lastIndexOf("/"));  //else remove first "/" and all chars after last "/", e.g. /var/www/dum - remove "dum"
             var path = osp.join(dirname, match);
+            scimoz.setSel(pos, pos-lengthafterslash);
+            scimoz.cut();
         } else {
             var path = dirname;
         }
