@@ -6,7 +6,9 @@ function displayFiles() {
     var scimoz = ko.views.manager.currentView.scimoz;
     var pos = scimoz.anchor;
     var line = scimoz.lineFromPosition(pos);
-    var dirname = kodoc.file.dirName;
+    var partSvc   = Cc["@activestate.com/koPartService;1"].getService(Ci.koIPartService);
+    if(partSvc.currentProject !== null) var projectDirectory = partSvc.currentProject.liveDirectory+"/";
+    var dirname = projectDirectory || "/";
     var string = scimoz.getTextRange(scimoz.getLineEndPosition(line)-scimoz.lineLength(line), scimoz.getLineEndPosition(line));
     var matches = string.match(/(?:\'|\")([^\'\"]+)(?:\'|\")/g);
     function recursive_display_files(path) {
